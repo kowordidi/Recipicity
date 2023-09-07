@@ -1,8 +1,8 @@
 class Recipe:
-    def __init__(self, name, instructions_file, ingredients):
+    def __init__(self, name, instructions_file, ingredients=None):
         self.name = name
         self.instructions_file = instructions_file
-        self.ingredients = ingredients
+        self.ingredients = ingredients if ingredients else {}
 
     def get_instructions(self):
         try:
@@ -18,5 +18,14 @@ class Recipe:
         return self.ingredients
 
     def add_ingredient(self, new_ingredient, new_amount="1 unit"):
-        self.instructions[new_ingredient] = new_amount
+        self.ingredients[new_ingredient] = new_amount
 
+#____________________________________________________________
+
+
+recipe_name = 'Thunfischnudeln'
+file_path = 'dat/Thunfischnudeln'
+
+thunfischnudeln_recipe = Recipe(recipe_name, file_path)
+
+print(thunfischnudeln_recipe.get_instructions())
