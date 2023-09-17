@@ -21,20 +21,30 @@ class Recipe:
         self.instructions = new_instructions
 
     def get_ingredients(self):
-        return self.ingredients
+        res = ''
+        for key, value in self.ingredients.items():
+            res += (f'{key}: {value}') + ", "
+        return res
 
     def add_ingredient(self, new_ingredient, new_amount="1 unit"):
         self.ingredients[new_ingredient] = new_amount
 
     def __str__(self):
         return (f"Name: {self.name} \n"
+                f"Ingredients: {self.get_ingredients()}\n"
                 f"Instructions: {self.get_instructions()}\n")
 
 
 #____________________________________________________________
 
 recipe1 = Recipe("Spaghetti", "Boil spaghetti in water.")
+recipe1.add_ingredient("Pasta", "200g")
+recipe1.add_ingredient("Tomato Sauce", "1 cup")
+
 recipe2 = Recipe("Salad", "Chop vegetables and mix with dressing.")
+recipe2.add_ingredient("Carrot", "100g")
+recipe2.add_ingredient("Paprika", "one")
+
 
 print(recipe1)  # This will print: Recipe: Spaghetti
 print(recipe2)  # This will print: Recipe: Salad
