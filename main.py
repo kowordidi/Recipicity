@@ -1,12 +1,16 @@
 class Recipe:
-    def __init__(self, name, instructions_file, ingredients=None):
+    def __init__(self, name, instructions, ingredients=None):
         self.name = name
-        self.instructions_file = instructions_file
         self.ingredients = ingredients if ingredients else {}
+        self.instructions = f'dat/{name}.txt'  # Create the file path
+
+        # Create the instructions file and write the instructions to it
+        with open(self.instructions, 'w') as file:
+            file.write(instructions)
 
     def get_instructions(self):
         try:
-            with open(self.instructions_file, 'r') as file:
+            with open(self.instructions, 'r') as file:
                 return file.read()
         except FileNotFoundError:
             return "Instructions not found"
@@ -23,9 +27,6 @@ class Recipe:
 #____________________________________________________________
 
 
-recipe_name = 'Thunfischnudeln'
-file_path = 'dat/Thunfischnudeln'
 
-thunfischnudeln_recipe = Recipe(recipe_name, file_path)
 
-print(thunfischnudeln_recipe.get_instructions())
+
