@@ -1,3 +1,4 @@
+import os
 class Recipe:
     def __init__(self, name, instructions, ingredients=None):
         self.name = name
@@ -5,8 +6,9 @@ class Recipe:
         self.instructions = f'dat/{name}.txt'  # Create the file path
 
         # Create the instructions file and write the instructions to it
-        with open(self.instructions, 'w') as file:
-            file.write(instructions)
+        if not os.path.exists(self.instructions):
+            with open(self.instructions, 'w') as file:
+                file.write(instructions)
 
     def get_instructions(self):
         try:
