@@ -16,6 +16,7 @@ def execute_query(query):
     cursor.execute(query)
     rows = cursor.fetchall()
     cursor.close()
+    mydb.commit()
     mydb.close()
     return rows
 
@@ -29,4 +30,13 @@ def print_recipes():
         print("Recipe Name:", recipe_name)
 
 
+def create_recipe(recipe_name, recipe_instructions):
+    query = f"INSERT INTO recipes (name, instructions) VALUES ('{recipe_name}', '{recipe_instructions}')"
+    execute_query(query)
+    last_insert_id_query = "SELECT LAST_INSERT_ID()"
+    last_insert_id = execute_query(last_insert_id_query)[0][0]
+    print("Recipe created successfully!")
+
+
+create_recipe("Salad", "cut up vegetables")
 print_recipes()
