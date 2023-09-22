@@ -1,4 +1,30 @@
-import os
+import os, mysql.connector
+
+mydb = mysql.connector.connect(
+    host="MacBook-Pro-von-Oliver.local",
+    user="root",
+    password="huhky8-jarbun-noxxeH",
+    database="recipes_db"
+)
+# Create a cursor object to execute SQL queries
+cursor = mydb.cursor()
+
+# Execute the SELECT query
+cursor.execute("SELECT id, name FROM recipes")
+
+# Fetch all rows from the result set
+rows = cursor.fetchall()
+
+# Print the recipe names and IDs
+for row in rows:
+    recipe_id, recipe_name = row
+    print("Recipe ID:", recipe_id)
+    print("Recipe Name:", recipe_name)
+    print()
+
+# Close the cursor and connection
+cursor.close()
+mydb.close()
 class Recipe:
     def __init__(self, name, instructions, ingredients=None):
         self.name = name
@@ -46,5 +72,6 @@ recipe2.add_ingredient("Carrot", "100g")
 recipe2.add_ingredient("Paprika", "one")
 
 
-print(recipe1)  # This will print: Recipe: Spaghetti
-print(recipe2)  # This will print: Recipe: Salad
+#print(recipe1)  # This will print: Recipe: Spaghetti
+#print(recipe2)  # This will print: Recipe: Salad
+
