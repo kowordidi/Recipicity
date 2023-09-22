@@ -1,4 +1,5 @@
 import mysql.connector
+import tkinter as tk
 
 
 def establish_connection():
@@ -38,5 +39,19 @@ def create_recipe(recipe_name, recipe_instructions):
     print("Recipe created successfully!")
 
 
-create_recipe("Salad", "cut up vegetables")
-print_recipes()
+# Create a new Tkinter window
+
+
+window = tk.Tk()
+window.geometry("800x600")  # Set the window size
+window.title("Recipicity")
+
+# Create and pack a label widget with text
+label = tk.Label(window, text="Hello, Tkinter!")
+label.pack()
+
+textbox = tk.Text(window)
+textbox.pack()
+# Start the Tkinter event loop
+window.mainloop()
+
