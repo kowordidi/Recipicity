@@ -1,29 +1,32 @@
-import os, mysql.connector
+import mysql.connector
+
 
 def establish_connection():
     return mysql.connector.connect(
         host="MacBook-Pro-von-Oliver.local",
         user="root",
         password="huhky8-jarbun-noxxeH",
-        database="recipes_db")
-def print_recipes():
+        database="recipes_db"
+    )
+
+
+def execute_query(query):
     mydb = establish_connection()
-    # Create a cursor object to execute SQL queries
     cursor = mydb.cursor()
-    # Execute the SELECT query
-    cursor.execute("SELECT id, name FROM recipes")
-    # Fetch all rows from the result set
+    cursor.execute(query)
     rows = cursor.fetchall()
-    # Print the recipe names and IDs
+    cursor.close()
+    mydb.close()
+    return rows
+
+
+def print_recipes():
+    query = "SELECT id, name FROM recipes"
+    rows = execute_query(query)
     for row in rows:
         recipe_id, recipe_name = row
         print("Recipe ID:", recipe_id)
         print("Recipe Name:", recipe_name)
-        print()
-    # Close the cursor and connection
-    cursor.close()
-    mydb.close()
 
-#____________________________________________________________
 
 print_recipes()
