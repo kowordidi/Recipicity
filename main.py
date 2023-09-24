@@ -1,6 +1,7 @@
 import os
 import mysql.connector
 import tkinter as tk
+import functools
 
 
 def establish_connection():
@@ -45,7 +46,7 @@ class RecipeApp:
         self.window.title(recipe_name)
 
         # Add a back button to return to the recipe list
-        back_button = tk.Button(self.window, text="Back", command=self.display_recipes)
+        back_button = tk.Button(self.window, text="Back", command=self.open_recipe_list_window)
         back_button.pack(anchor="nw")
 
         # Create and pack new widgets
@@ -55,7 +56,11 @@ class RecipeApp:
         instructions_label = tk.Label(self.window, text=f"Instructions:\n{recipe_instructions}")
         instructions_label.pack()
 
-    def display_recipes(self):
+        # create an edit button
+        edit_button = tk.Button(self.window, text="edit", command=self.open_recipe_list_window)
+        edit_button.pack()
+
+    def open_recipe_list_window(self):
         # Clear the window
         for widget in self.window.winfo_children():
             widget.destroy()
@@ -72,11 +77,11 @@ class RecipeApp:
         for recipe_item in recipe_list:
             recipe_id, recipe_name = recipe_item
             recipe_button = tk.Button(self.window, text=f"Recipe ID: {recipe_id}, Recipe Name: {recipe_name}",
-                                      command=lambda id_=recipe_id: self.open_recipe_window(id_))
+                                      command=functools.partial(self.open_recipe_window, recipe_id))
             recipe_button.pack(pady=10)
 
     def run(self):
-        self.display_recipes()
+        self.open_recipe_list_window()
         self.window.mainloop()
 
 
