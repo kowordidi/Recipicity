@@ -3,19 +3,20 @@ import mysql.connector
 import tkinter as tk
 
 
+def establish_connection():
+    return mysql.connector.connect(
+        host="MacBook-Pro-von-Oliver.local",
+        user="root",
+        password=os.getenv("DB_PASSWORD"),
+        database="recipes_db"
+    )
+
+
 class RecipeApp:
     def __init__(self):
         self.window = tk.Tk()
         self.window.geometry("800x600")  # Set the window size
-        self.mydb = self.establish_connection()
-
-    def establish_connection(self):
-        return mysql.connector.connect(
-            host="MacBook-Pro-von-Oliver.local",
-            user="root",
-            password=os.getenv("DB_PASSWORD"),
-            database="recipes_db"
-        )
+        self.mydb = establish_connection()
 
     def execute_query(self, query):
         cursor = self.mydb.cursor()
@@ -43,16 +44,16 @@ class RecipeApp:
         # Update the window title
         self.window.title(recipe_name)
 
+        # Add a back button to return to the recipe list
+        back_button = tk.Button(self.window, text="Back", command=self.display_recipes)
+        back_button.pack(anchor="nw")
+
         # Create and pack new widgets
         recipe_name_label = tk.Label(self.window, text=f"Recipe Name: {recipe_name}")
         recipe_name_label.pack()
 
         instructions_label = tk.Label(self.window, text=f"Instructions:\n{recipe_instructions}")
         instructions_label.pack()
-
-        # Add a back button to return to the recipe list
-        back_button = tk.Button(self.window, text="Back", command=self.display_recipes)
-        back_button.pack()
 
     def display_recipes(self):
         # Clear the window
