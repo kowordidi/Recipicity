@@ -57,8 +57,27 @@ class RecipeApp:
         instructions_label.pack()
 
         # create an edit button
-        edit_button = tk.Button(self.window, text="edit", command=self.open_recipe_list_window)
+        edit_button = tk.Button(self.window, text="edit", command=functools.partial(self.open_recipe_edit_window, recipe_id))
         edit_button.pack()
+
+    def open_recipe_edit_window(self, recipe_id):
+        recipe_name, recipe_instructions = self.get_recipe_by_id(recipe_id)
+
+        # Clear the window
+        for widget in self.window.winfo_children():
+            widget.destroy()
+
+        # Update the window title
+        self.window.title("edit " + recipe_name)
+
+        # Add a back button to return to the recipe list
+        back_button = tk.Button(self.window, text="Back", command=self.open_recipe_list_window)
+        back_button.pack(anchor="nw")
+
+        # Create and pack new widgets
+        recipe_name_label = tk.Label(self.window, text="This is the edit window")
+        recipe_name_label.pack()
+
 
     def open_recipe_list_window(self):
         # Clear the window
