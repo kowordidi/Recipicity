@@ -39,15 +39,12 @@ class RecipeGUI:
         self.window.title(recipe_name)
         self.create_back_button(self.open_recipe_list_window)
 
-        # Create and pack new widgets
-        recipe_name_label = tk.Label(self.window, text=f"Recipe Name: {recipe_name}")
-        recipe_name_label.pack()
-
-        instructions_label = tk.Label(self.window, text=f"Instructions:\n{recipe_instructions}")
-        instructions_label.pack()
+        self.create_label(recipe_name)
+        self.create_label(recipe_instructions)
 
         # create an edit button
-        edit_button = tk.Button(self.window, text="edit",
+        edit_button = tk.Button(self.window,
+                                text="edit",
                                 command=functools.partial(self.open_recipe_edit_window, recipe_id))
         edit_button.pack()
 
@@ -65,12 +62,12 @@ class RecipeGUI:
 
         # save button
         def save_button_command(id_to_change):
-            new_name = name_entry.get()
             new_instructions = instructions_text.get("1.0", 'end-1c')
-            name_query = f"UPDATE recipes SET name = '{new_name}' WHERE id = {id_to_change}"
-            self.db.execute_query(name_query)
-            instructions_query = f"UPDATE recipes SET instructions = '{new_instructions}' WHERE id = {id_to_change}"
-            self.db.execute_query(instructions_query)
+            name_query = "UPDATE recipes SET name = %s WHERE id = %s"
+            name_params = (name_entry.get(), id_to_change)
+            instructions_query = "UPDATE recipes SET instructions = %s WHERE id = %s"
+            instructions_params = (new_instructions, id_to_change)
+            self.db.execute_query(instructions_query, instructions_params)
             self.open_recipe_window(id_to_change)
 
         save_button = tk.Button(self.window, text="save", command=lambda: save_button_command(recipe_id))
@@ -88,7 +85,7 @@ class RecipeGUI:
             recipe_list = self.db.get_all_recipes()
             for recipe_item in recipe_list:
                 recipe_id, recipe_name = recipe_item
-                recipe_button = tk.Button(self.window, text=f"Recipe ID: {recipe_id}, Recipe Name: {recipe_name}",
+                recipe_button = tk.Button(self.window, text=recipe_name,
                                           command=functools.partial(self.open_recipe_window, recipe_id))
                 recipe_button.pack(pady=10)
         except Exception as e:

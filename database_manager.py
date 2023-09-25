@@ -6,7 +6,8 @@ def establish_connection():
     return mysql.connector.connect(
         host="MacBook-Pro-von-Oliver.local",
         user="root",
-        password=os.getenv("DB_PASSWORD"),
+        # password=os.getenv("DB_PASSWORD"),
+        password="huhky8-jarbun-noxxeH",
         database="recipes_db"
     )
 
