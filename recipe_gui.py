@@ -62,16 +62,17 @@ class RecipeGUI:
 
         # save button
         def save_button_command(id_to_change):
+            new_name = name_entry.get()
             new_instructions = instructions_text.get("1.0", 'end-1c')
-            name_query = "UPDATE recipes SET name = %s WHERE id = %s"
-            name_params = (name_entry.get(), id_to_change)
-            instructions_query = "UPDATE recipes SET instructions = %s WHERE id = %s"
-            instructions_params = (new_instructions, id_to_change)
-            self.db.execute_query(instructions_query, instructions_params)
+
+            query = "UPDATE recipes SET name = %s, instructions = %s WHERE id = %s"
+            params = (new_name, new_instructions, id_to_change)
+
+            self.db.execute_query(query, params)
+
             self.open_recipe_window(id_to_change)
 
         save_button = tk.Button(self.window, text="save", command=lambda: save_button_command(recipe_id))
-
         save_button.pack()
 
     def open_recipe_list_window(self):
