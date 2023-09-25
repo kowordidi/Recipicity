@@ -8,6 +8,7 @@ def establish_connection():
     return mysql.connector.connect(
         host="MacBook-Pro-von-Oliver.local",
         user="root",
+        # password="huhky8-jarbun-noxxeH",
         password=os.getenv("DB_PASSWORD"),
         database="recipes_db"
     )
@@ -57,7 +58,8 @@ class RecipeApp:
         instructions_label.pack()
 
         # create an edit button
-        edit_button = tk.Button(self.window, text="edit", command=functools.partial(self.open_recipe_edit_window, recipe_id))
+        edit_button = tk.Button(self.window, text="edit",
+                                command=functools.partial(self.open_recipe_edit_window, recipe_id))
         edit_button.pack()
 
     def open_recipe_edit_window(self, recipe_id):
@@ -70,14 +72,39 @@ class RecipeApp:
         # Update the window title
         self.window.title("edit " + recipe_name)
 
-        # Add a back button to return to the recipe list
+        # back button to return to the recipe list
         back_button = tk.Button(self.window, text="Back", command=self.open_recipe_list_window)
         back_button.pack(anchor="nw")
 
-        # Create and pack new widgets
-        recipe_name_label = tk.Label(self.window, text="This is the edit window")
+        # Label for name edit
+        recipe_name_label = tk.Label(self.window, text="Name")
         recipe_name_label.pack()
 
+        # entry for name edit
+        recipe_name_entry = tk.Entry(self.window)
+        recipe_name_entry.pack()
+        recipe_name_entry.insert(0, recipe_name)
+        recipe_name_entry.focus()
+
+        # Label for instructions edit
+        recipe_instructions_label = tk.Label(self.window, text="Instructions")
+        recipe_instructions_label.pack()
+
+        # text for instructions edit
+        recipe_instructions_text = tk.Text(self.window)
+        recipe_instructions_text.pack()
+        recipe_instructions_text.insert("1.0", recipe_instructions)
+
+        # save button
+        def save_button_command(id_to_change, new_name):
+            query = f"UPDATE recipes SET name = '{new_name}' WHERE id = {id_to_change}"
+            self.execute_query(query)
+            self.open_recipe_window(id_to_change)
+
+        save_button = tk.Button(self.window, text="save",
+                                command=lambda: save_button_command(recipe_id, recipe_name_entry.get()))
+
+        save_button.pack()
 
     def open_recipe_list_window(self):
         # Clear the window
