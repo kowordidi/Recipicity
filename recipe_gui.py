@@ -12,17 +12,32 @@ class RecipeGUI:
         for widget in self.window.winfo_children():
             widget.destroy()
 
+    def create_back_button(self, command):
+        back_button = tk.Button(self.window, text="Back", command=command)
+        back_button.pack(anchor="nw")
+
+    def create_label(self, text):
+        label = tk.Label(self.window, text=text)
+        label.pack()
+
+    def create_entry(self, default_text):
+        entry = tk.Entry(self.window)
+        entry.pack()
+        entry.insert(0, default_text)
+        entry.focus()
+        return entry
+
+    def create_text(self, default_text):
+        text = tk.Text(self.window)
+        text.pack()
+        text.insert("1.0", default_text)
+        return text
+
     def open_recipe_window(self, recipe_id):
         recipe_name, recipe_instructions = self.db.get_recipe_by_id(recipe_id)
-
         self.clear_window()
-
-        # Update the window title
         self.window.title(recipe_name)
-
-        # Add a back button to return to the recipe list
-        back_button = tk.Button(self.window, text="Back", command=self.open_recipe_list_window)
-        back_button.pack(anchor="nw")
+        self.create_back_button(self.open_recipe_list_window)
 
         # Create and pack new widgets
         recipe_name_label = tk.Label(self.window, text=f"Recipe Name: {recipe_name}")
@@ -38,47 +53,27 @@ class RecipeGUI:
 
     def open_recipe_edit_window(self, recipe_id):
         recipe_name, recipe_instructions = self.db.get_recipe_by_id(recipe_id)
-
         self.clear_window()
-
-        # Update the window title
+        self.create_back_button(functools.partial(self.open_recipe_window, recipe_id))
         self.window.title("edit " + recipe_name)
 
-        # back button to return to the recipe list
-        back_button = tk.Button(self.window, text="Back", command=self.open_recipe_list_window)
-        back_button.pack(anchor="nw")
+        self.create_label("Name")
+        name_entry = self.create_entry(recipe_name)
 
-        # Label for name edit
-        recipe_name_label = tk.Label(self.window, text="Name")
-        recipe_name_label.pack()
-
-        # entry for name edit
-        recipe_name_entry = tk.Entry(self.window)
-        recipe_name_entry.pack()
-        recipe_name_entry.insert(0, recipe_name)
-        recipe_name_entry.focus()
-
-        # Label for instructions edit
-        recipe_instructions_label = tk.Label(self.window, text="Instructions")
-        recipe_instructions_label.pack()
-
-        # text for instructions edit
-        recipe_instructions_text = tk.Text(self.window)
-        recipe_instructions_text.pack()
-        recipe_instructions_text.insert("1.0", recipe_instructions)
+        self.create_label("Instructions")
+        instructions_text = self.create_text(recipe_instructions)
 
         # save button
-        def save_button_command(id_to_change, new_name, new_instructions):
+        def save_button_command(id_to_change):
+            new_name = name_entry.get()
+            new_instructions = instructions_text.get("1.0", 'end-1c')
             name_query = f"UPDATE recipes SET name = '{new_name}' WHERE id = {id_to_change}"
             self.db.execute_query(name_query)
             instructions_query = f"UPDATE recipes SET instructions = '{new_instructions}' WHERE id = {id_to_change}"
             self.db.execute_query(instructions_query)
             self.open_recipe_window(id_to_change)
 
-        save_button = tk.Button(self.window, text="save",
-                                command=lambda: save_button_command(recipe_id,
-                                                                    recipe_name_entry.get(),
-                                                                    recipe_instructions_text.get("1.0", 'end-1c')))
+        save_button = tk.Button(self.window, text="save", command=lambda: save_button_command(recipe_id))
 
         save_button.pack()
 
@@ -86,13 +81,8 @@ class RecipeGUI:
         print("Opening recipe list window...")
         try:
             self.clear_window()
-
-            # Update the window title
             self.window.title("Recipicity")
-
-            # Create and pack a label widget with text
-            label = tk.Label(self.window, text="All Recipes")
-            label.pack()
+            self.create_label("All recipes")
 
             # Retrieve and display all recipes
             recipe_list = self.db.get_all_recipes()
