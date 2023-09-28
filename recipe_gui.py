@@ -16,22 +16,22 @@ class RecipeGUI:
 
     def create_back_button(self, command):
         back_button = tk.Button(self.window, text="Back", command=command)
-        back_button.pack(anchor="nw")
+        back_button.grid()
 
     def create_label(self, text):
         label = tk.Label(self.window, text=text)
-        label.pack()
+        label.grid()
 
     def create_entry(self, default_text):
         entry = tk.Entry(self.window)
-        entry.pack()
+        entry.grid()
         entry.insert(0, default_text)
         entry.focus()
         return entry
 
     def create_text(self, default_text):
         text = tk.Text(self.window)
-        text.pack()
+        text.grid()
         text.insert("1.0", default_text)
         return text
 
@@ -48,7 +48,7 @@ class RecipeGUI:
         edit_button = tk.Button(self.window,
                                 text="edit",
                                 command=functools.partial(self.open_recipe_edit_window, recipe_id))
-        edit_button.pack()
+        edit_button.grid()
 
     def open_recipe_edit_window(self, recipe_id):
         recipe_name, recipe_instructions = self.db.get_recipe_by_id(recipe_id)
@@ -75,23 +75,28 @@ class RecipeGUI:
             self.open_recipe_window(id_to_change)
 
         save_button = tk.Button(self.window, text="save", command=lambda: save_button_command(recipe_id))
-        save_button.pack()
+        save_button.grid()
 
     def open_recipe_list_window(self):
         print("Opening recipe list window...")
         try:
             self.clear_window()
             self.window.title("Recipicity")
-            self.create_label("All recipes")
 
             # Retrieve and display all recipes
             recipe_list = self.db.get_all_recipes()
+            row = 0
+            column = 0
             for recipe_item in recipe_list:
                 recipe_id, recipe_name = recipe_item
                 recipe_button = tk.Button(self.window,
                                           text=recipe_name,
                                           command=functools.partial(self.open_recipe_window, recipe_id))
-                recipe_button.pack(pady=10)
+                recipe_button.grid(row=row, column=column)
+                column += 1
+                if column > 3:
+                    column = 0
+                    row += 1
         except Exception as e:
             print(f"An error occurred in open_recipe_list_window: {e}")
         print("Recipe list window opened successfully.")
