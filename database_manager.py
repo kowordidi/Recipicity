@@ -3,13 +3,16 @@ import mysql.connector
 
 
 def establish_connection():
-    return mysql.connector.connect(
-        host="MacBook-Pro-von-Oliver.local",
-        user="root",
-        # password=os.getenv("DB_PASSWORD"),
-        password="huhky8-jarbun-noxxeH",
-        database="recipes_db"
-    )
+    try:
+        return mysql.connector.connect(
+            host="localhost",
+            user="root",
+            password=os.getenv("DB_PASSWORD"),
+            database="recipicity_db"
+        )
+    except mysql.connector.Error as error:
+        print(f"Error establishing database connection: {error}")
+        return None
 
 
 class DatabaseManager:

@@ -2,6 +2,8 @@ import tkinter as tk
 import functools
 
 recipe_button_size = 10
+
+
 class RecipeGUI:
     def __init__(self, db):
         self.window = tk.Tk()
@@ -88,8 +90,6 @@ class RecipeGUI:
                 recipe_id, recipe_name = recipe_item
                 recipe_button = tk.Button(self.window,
                                           text=recipe_name,
-                                          height=recipe_button_size,
-                                          width=recipe_button_size,
                                           command=functools.partial(self.open_recipe_window, recipe_id))
                 recipe_button.pack(pady=10)
         except Exception as e:
@@ -97,6 +97,7 @@ class RecipeGUI:
         print("Recipe list window opened successfully.")
 
     def run(self):
+        print(self.db.execute_query("SELECT* FROM recipes"))
         print("Running the GUI...")
         try:
             self.open_recipe_list_window()
