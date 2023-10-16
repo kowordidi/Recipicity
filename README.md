@@ -1,2 +1,12 @@
 # Recipicity
-This is my current hobby project :) I am aiming for a recipe recomender system which contains recipes from other platforms as well as private ones
+This is...
+give an overview introduction --> What is this about
+
+Prerequisites:
+Python 3.11+
+Mysql
+
+A line of how to execute the script (run main file in pycharm)
+Screenshot of tkinter (mention GUI)
+
+
