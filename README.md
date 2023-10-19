@@ -1,5 +1,5 @@
 ## Introduction
-Recipicity is recipe mangager and recommender
+Recipicity is recipe mangager and recommender. It currently only runs on my local mashine, as the databank is also local.
 
 ## Prerequisites
 - Python 3.11+
@@ -13,6 +13,8 @@ Recipicity is recipe mangager and recommender
 Run main.py
 
 ## Screenshots of GUI
-- ![Screenshot](./Screenshots/Screenshot_edit)
+- ![Screenshot](./Screenshots/Screenshot_recipe_list.png)
+- ![Screenshot](./Screenshots/Screenshot_single_recipe.png)
+- ![Screenshot](./Screenshots/Screenshot_edit.png)
 
 
